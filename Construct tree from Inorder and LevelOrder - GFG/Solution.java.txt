@@ -1,0 +1,56 @@
+class GfG
+{
+ 
+    int search(int[] io, int x) {
+        for(int i=0;i<io.length;i++) {
+            if(x == io[i]){ return i;}
+        }
+        return -1;
+    }   
+    int[] create(int[] io, int i, int j) {
+        if(i>j) return null;
+        int size = j-i+1;
+        int[] res = new int[size];
+        for(int k=i, t=0;k<=j;k++, t++) {
+            res[t] = io[k];
+        }
+        return res;
+    }
+    int[] find(int[] io, int[] lo) {
+        if(io == null) return null;
+        int[] res = new int[io.length];
+        int k = 0;
+        for(int i =0;i<lo.length;i++) {
+            for(int j =0;j<io.length;j++) {
+                if(lo[i] == io[j]) {
+                    res[k++] = lo[i];
+                }
+            }
+        }
+        return res;
+    }
+    
+    Node build(int[] io, int[] lo){
+        if(io == null || lo == null) {
+            return null;
+        }
+        
+        Node newNode = new Node(lo[0]);
+        int mid = search(io, lo[0]);
+        int[] ioLeft = create(io, 0, mid-1);
+        int[] ioRight = create(io, mid+1, io.length-1);
+        
+        int[] loLeft = find(ioLeft, lo);
+        int[] loRight = find(ioRight, lo);
+        
+        newNode.left = build(ioLeft, loLeft);
+        newNode.right = build(ioRight, loRight);
+        return newNode;
+    }
+    Node buildTree(int inord[], int level[])
+    {
+            return build(inord, level);
+    }
+    
+   
+}
